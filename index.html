@@ -14,21 +14,26 @@
     <title>Minesweeper</title>
 </head>
 
-<script>
-
-
-</script>
-
 <body onload="displayName()">
     <h1 id="greeting"></h1>
-    <div class="buttons">
-        <button onclick="chooseSmall()" class="size-btn btn btn-primary" id="small-btn">Small</button>
-        <button onclick="chooseMedium()" class="size-btn btn btn-primary" id="medium-btn">Medium</button>
-        <button onclick="chooseLarge()" class="size-btn btn btn-primary" id="large-btn">Large</button>
-    </div>
-    <div class="card">
-        <div class="playfield playfield-default">
-
+    <div class="container">
+        <div class="buttons">
+            <button onclick="chooseSmall()" class="size-btn btn btn-primary" id="small-btn">Easy</button>
+            <button onclick="chooseMedium()" class="size-btn btn btn-primary" id="medium-btn">Medium</button>
+            <button onclick="chooseLarge()" class="size-btn btn btn-primary" id="large-btn">Hard</button>
+        </div>
+        <div class="content">
+            <div id="grid" class="grid">
+                <div class="playfield playfield-default">
+                </div>
+            </div>
+        </div>
+        <div class="mines">
+            <span>Remaining mines:</span>
+        </div>
+        <div id="status" class="status">
+            <span id="gameStatus"></span>
+            <button onclick="startOver()" class="startover-btn btn btn-success">Start over</button>
         </div>
     </div>
 </body>

@@ -1,26 +1,90 @@
-/* .body {} */
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Roboto+Mono:wght@500&display=swap');
 
-.card {
-    border: solid 2px black !important;
-    display: inline-block !important;
+
+body {
+    margin: 25px;
+}
+
+* {
+    font-family: 'IM Fell DW Pica', serif;
+}
+
+#greeting {
+    text-align: center;
+}
+
+.container {
+    justify-content: center;
+    align-items: center;
+}
+
+.buttons {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.size-btn {
+    margin: 15px;
+}
+
+.content {
+    display: inline-block;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.grid {
+    border: solid 2px black;
+    display: grid;
+    border-radius: 0;
+}
+
+.playfield {
+    background-color: rgba(204, 202, 202, 0.747);
 }
 
 .playfield-default {
-    width: 100px;
-    height: 100px;
+    width: 200px;
+    height: 200px;
 }
 
 .playfield-small {
-    width: 225px;
-    height: 225px;
+    width: 235px;
+    height: 235px;
 }
 
 .playfield-medium {
-    width: 350px;
-    height: 350px;
+    width: 320px;
+    height: 320px;
 }
 
 .playfield-large {
-    width: 475px;
-    height: 475px;
+    width: 505px;
+    height: 505px;
+}
+
+.mines {
+    margin: 15px;
+    display: flex;
+    justify-content: center;
+}
+
+.status {
+    display: none;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+    align-items: center;
+    margin: 15px;
+}
+
+#gameStatus {
+    font-size: 25px;
+    font-weight: 500;
+}
+
+.startover-btn {
+    display: block !important;
 }
