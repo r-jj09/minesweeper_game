@@ -2,7 +2,7 @@
 
 
 body {
-    margin: 25px;
+    margin: 25px !important;
 }
 
 * {
@@ -37,32 +37,55 @@ body {
 
 .grid {
     border: solid 2px black;
-    display: grid;
     border-radius: 0;
 }
 
 .playfield {
     background-color: rgba(204, 202, 202, 0.747);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+}
+
+.field {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    background-color: rgba(0, 0, 0, 0.342);
+    border: solid 1.5px black;
+}
+
+.fieldCover {
+    position: absolute;
+    width: 35px;
+    height: 35px;
+    background-color: rgb(209, 209, 209);
+    border: solid 1.5px black;
+}
+
+.fieldCover:hover {
+    background-color: rgba(160, 115, 115, 0.651);
+    cursor: pointer;
 }
 
 .playfield-default {
-    width: 200px;
-    height: 200px;
+    width: 210px;
+    height: 210px;
 }
 
 .playfield-small {
-    width: 235px;
-    height: 235px;
+    width: 245px;
+    height: 245px;
 }
 
 .playfield-medium {
-    width: 320px;
-    height: 320px;
+    width: 350px;
+    height: 350px;
 }
 
 .playfield-large {
-    width: 505px;
-    height: 505px;
+    width: 490px;
+    height: 490px;
 }
 
 .mines {
