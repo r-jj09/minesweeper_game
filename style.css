@@ -92,6 +92,10 @@ body {
     justify-content: center;
 }
 
+#mines {
+    font-size: 20px;
+}
+
 .status {
     display: none;
     flex-direction: column;

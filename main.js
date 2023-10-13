@@ -1,11 +1,12 @@
-function displayName() {
-	var playerName = prompt("What's your name?");
-	if (playerName != null) {
-		document.getElementById("greeting").innerText = "Hello " + playerName + "!";
-	}
-}
+// function displayName() {
+// 	var playerName = prompt("What's your name?");
+// 	if (playerName != null) {
+// 		document.getElementById("greeting").innerText = "Hello " + playerName + "!";
+// 	}
+// }
 var won = true;
 var bombCount;
+var remainingBombs;
 var size;
 $(document).ready(function () {
 	var playfield = document.querySelector(".playfield");
@@ -31,6 +32,7 @@ $(document).ready(function () {
 			playfield.classList.remove("playfield-medium");
 			playfield.classList.add("playfield-large");
 		}
+		remainingBombs = bombCount + 1;
 		createGame();
 	});
 	function createGame() {
@@ -58,42 +60,63 @@ $(document).ready(function () {
 				field.attr("data-bomb", 1);
 				--bombCount;
 			}
-			console.log(bombIndex);
+			// console.log(bombIndex);
 		} while (bombCount >= 0);
-
+		updateRemaining();
 		$(".playfield").on("click", ".field", (event) => {
 			if (event.currentTarget.getAttribute("data-bomb") == 1) {
 				event.currentTarget.style.backgroundColor = "red";
-				event.currentTarget.innerText = "💣";
+				event.currentTarget.textContent = "💣";
+				event.currentTarget.style.fontSize = "1.5em";
 				won = false;
+				--remainingBombs;
+				updateRemaining();
 				gameOver();
 			} else {
 				event.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.342)";
-				walkAround();
+				// walkAround();
 			}
 		});
+		$(".playfield").on("contextmenu", ".field", (event) => {
+			event.preventDefault();
+			if (event.currentTarget.textContent == "") {
+				event.currentTarget.textContent = "🏳️";
+				event.currentTarget.style.fontSize = "1.5em";
+				event.currentTarget.classList.add("flagged");
+				--remainingBombs;
+			} else if ((event.currentTarget.textContent = "🏳️")) {
+				event.currentTarget.textContent = "";
+				++remainingBombs;
+			}
+			updateRemaining();
+		});
 
-		function walkAround() {
-			for (let i = 0; i < array.length; i++) {}
-			return;
+		// function walkAround() {
+		// 	for (let i = 0; i < array.length; i++) {}
+		// 	return;
+		// }
+
+		function updateRemaining() {
+			document.getElementById("mines").textContent =
+				"Remaining mines: " + remainingBombs;
+		}
+	}
+
+	function gameOver() {
+		document.getElementById("status").style.display = "flex";
+		if (won === false) {
+			document.getElementById("gameStatus").innerText = "You lost!";
+			document.getElementById("gameStatus").style.color = "red";
+		} else {
+			document.getElementById("gameStatus").innerText = "You won!";
+			document.getElementById("gameStatus").style.color = "green";
 		}
 	}
 });
-
-function gameOver() {
-	document.getElementById("status").style.display = "flex";
-	if (won === false) {
-		document.getElementById("gameStatus").innerText = "You lost!";
-		document.getElementById("gameStatus").style.color = "red";
-	} else {
-		document.getElementById("gameStatus").innerText = "You won!";
-		document.getElementById("gameStatus").style.color = "green";
-	}
-}
 function startOver() {
 	document.getElementById("status").style.display = "none";
 	$(".playfield").empty();
-
+	document.getElementById("mines").textContent = "Remaining mines: ❌";
 	var field = document.querySelector(".playfield");
 
 	field.classList.add("playfield-small");
