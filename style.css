@@ -13,6 +13,17 @@ body {
     text-align: center;
 }
 
+.difficulty {
+    display: flex;
+    justify-content: center;
+}
+
+.difficulty span {
+    font-size: 20px;
+    text-align: center;
+    margin: 5px 10px;
+}
+
 .container {
     justify-content: center;
     align-items: center;
@@ -58,11 +69,6 @@ body {
 .field:hover {
     background-color: rgba(160, 115, 115, 0.651);
     cursor: pointer;
-}
-
-.playfield-default {
-    width: 210px;
-    height: 210px;
 }
 
 .playfield-small {

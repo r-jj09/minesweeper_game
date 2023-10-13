@@ -20,11 +20,14 @@
 
 <body onload="displayName()">
     <h1 id="greeting"></h1>
+    <div class="difficulty">
+        <span>Chosse your difficulty level</span>
+    </div>
     <div class="container">
         <div class="buttons">
-            <button onclick="createSmall()" class="size-btn btn btn-primary" id="small-btn">Easy</button>
-            <button onclick="createMedium()" class="size-btn btn btn-primary" id="medium-btn">Medium</button>
-            <button onclick="createLarge()" class="size-btn btn btn-primary" id="large-btn">Hard</button>
+            <button type="button" class="small-btn size-btn btn btn-primary">Easy</button>
+            <button type="button" class="medium-btn size-btn btn btn-primary">Medium</button>
+            <button type="button" class="large-btn size-btn btn btn-primary">Hard</button>
         </div>
         <div class="content">
             <div id="grid" class="grid">
