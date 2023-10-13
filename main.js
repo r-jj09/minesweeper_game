@@ -6,8 +6,11 @@
 // }
 var won = true;
 var bombCount;
+var placedBomb;
 var remainingBombs;
 var size;
+var found = 0;
+var bomb = 0;
 $(document).ready(function () {
 	var playfield = document.querySelector(".playfield");
 	var difficulty = document.querySelector(".difficulty");
@@ -33,10 +36,12 @@ $(document).ready(function () {
 			playfield.classList.add("playfield-large");
 		}
 		remainingBombs = bombCount + 1;
+		placedBomb = bombCount + 1;
 		createGame();
 	});
 	function createGame() {
 		$(".playfield").empty();
+		document.getElementById("status").style.display = "none";
 		var num = 1;
 		for (let i = 0; i < size; i++) {
 			for (let j = 0; j < size; j++) {
@@ -50,17 +55,17 @@ $(document).ready(function () {
 				num++;
 			}
 		}
-		console.log(fieldCount);
+		// console.log(fieldCount);
 		do {
 			var bombIndex = Math.random();
 			bombIndex = bombIndex * fieldCount;
-			bombIndex = Math.floor(bombIndex);
+			bombIndex = Math.floor(bombIndex) + 1;
 			let field = $("[data-num=" + bombIndex + "]");
 			if (field.attr("data-bomb") !== "1") {
 				field.attr("data-bomb", 1);
 				--bombCount;
 			}
-			// console.log(bombIndex);
+			console.log(bombIndex);
 		} while (bombCount >= 0);
 		updateRemaining();
 		$(".playfield").on("click", ".field", (event) => {
@@ -74,9 +79,28 @@ $(document).ready(function () {
 				gameOver();
 			} else {
 				event.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.342)";
-				// walkAround();
+				walkAround();
+				event.currentTarget.textContent = bomb;
 			}
 		});
+
+		function walkAround() {
+			var x = parseInt(event.currentTarget.getAttribute("data-x"));
+			var y = parseInt(event.currentTarget.getAttribute("data-y"));
+			for (let i = x - 1; i <= x + 1; i++) {
+				for (let j = y - 1; j <= y + 1; j++) {
+					var element = document.querySelector(
+						`[data-x="${i}"][data-y="${j}"]`
+					);
+					if (element && element.getAttribute("data-bomb") == 1) {
+						++bomb;
+						console.log(bomb);
+					}
+				}
+			}
+			return bomb;
+		}
+
 		$(".playfield").on("contextmenu", ".field", (event) => {
 			event.preventDefault();
 			if (event.currentTarget.textContent == "") {
@@ -84,17 +108,24 @@ $(document).ready(function () {
 				event.currentTarget.style.fontSize = "1.5em";
 				event.currentTarget.classList.add("flagged");
 				--remainingBombs;
+				if (
+					event.currentTarget.classList.contains("flagged") &&
+					event.currentTarget.getAttribute("data-bomb") == 1
+				) {
+					++found;
+					console.log("You found: " + found);
+				}
 			} else if ((event.currentTarget.textContent = "🏳️")) {
 				event.currentTarget.textContent = "";
+				event.currentTarget.classList.remove("flagged");
 				++remainingBombs;
 			}
 			updateRemaining();
+			if (found == placedBomb) {
+				won = true;
+				gameOver();
+			}
 		});
-
-		// function walkAround() {
-		// 	for (let i = 0; i < array.length; i++) {}
-		// 	return;
-		// }
 
 		function updateRemaining() {
 			document.getElementById("mines").textContent =
@@ -109,6 +140,7 @@ $(document).ready(function () {
 			document.getElementById("gameStatus").style.color = "red";
 		} else {
 			document.getElementById("gameStatus").innerText = "You won!";
+			document.getElementById("mines").textContent = "Remaining mines: ✔";
 			document.getElementById("gameStatus").style.color = "green";
 		}
 	}
@@ -118,7 +150,6 @@ function startOver() {
 	$(".playfield").empty();
 	document.getElementById("mines").textContent = "Remaining mines: ❌";
 	var field = document.querySelector(".playfield");
-
 	field.classList.add("playfield-small");
 	field.classList.remove("playfield-medium");
 	field.classList.remove("playfield-large");
