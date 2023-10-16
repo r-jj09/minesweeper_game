@@ -10,7 +10,7 @@ var placedBomb;
 var remainingBombs;
 var size;
 var found = 0;
-var bomb = 0;
+var neighborBombs = 0;
 $(document).ready(function () {
 	var playfield = document.querySelector(".playfield");
 	var difficulty = document.querySelector(".difficulty");
@@ -41,6 +41,8 @@ $(document).ready(function () {
 	});
 	function createGame() {
 		$(".playfield").empty();
+		found = 0;
+		bomb = 0;
 		document.getElementById("status").style.display = "none";
 		var num = 1;
 		for (let i = 0; i < size; i++) {
@@ -65,66 +67,53 @@ $(document).ready(function () {
 				field.attr("data-bomb", 1);
 				--bombCount;
 			}
-			console.log(bombIndex);
+			// console.log(bombIndex);
 		} while (bombCount >= 0);
 		updateRemaining();
-		$(".playfield").on("click", ".field", (event) => {
-			if (event.currentTarget.getAttribute("data-bomb") == 1) {
-				event.currentTarget.style.backgroundColor = "red";
-				event.currentTarget.textContent = "💣";
-				event.currentTarget.style.fontSize = "1.5em";
-				won = false;
-				--remainingBombs;
+		$(".field").on("mousedown", (event) => {
+			// console.log(event.which);
+			if (event.which === 1) {
+				if (event.currentTarget.getAttribute("data-bomb") == 1) {
+					event.currentTarget.style.backgroundColor = "red";
+					event.currentTarget.textContent = "💣";
+					event.currentTarget.style.fontSize = "1.5em";
+					won = false;
+					--remainingBombs;
+					updateRemaining();
+					gameOver();
+				} else {
+					checkRound($(event.currentTarget));
+					event.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.342)";
+					event.currentTarget.textContent = neighborBombs;
+				}
+			} else if (event.which === 3) {
+				if (!event.currentTarget.textContent) {
+					event.currentTarget.textContent = "🏳️";
+					event.currentTarget.style.fontSize = "1.5em";
+					event.currentTarget.classList.add("flagged");
+					--remainingBombs;
+					if (
+						event.currentTarget.classList.contains("flagged") &&
+						event.currentTarget.getAttribute("data-bomb") == 1
+					) {
+						++found;
+						console.log("You found: " + found);
+					}
+				} else if ((event.currentTarget.textContent = "🏳️")) {
+					event.currentTarget.textContent = "";
+					event.currentTarget.classList.remove("flagged");
+					++remainingBombs;
+				}
 				updateRemaining();
-				gameOver();
-			} else {
-				event.currentTarget.style.backgroundColor = "rgba(0, 0, 0, 0.342)";
-				walkAround();
-				event.currentTarget.textContent = bomb;
+				if (found == placedBomb) {
+					won = true;
+					gameOver();
+				}
 			}
 		});
-
-		function walkAround() {
-			var x = parseInt(event.currentTarget.getAttribute("data-x"));
-			var y = parseInt(event.currentTarget.getAttribute("data-y"));
-			for (let i = x - 1; i <= x + 1; i++) {
-				for (let j = y - 1; j <= y + 1; j++) {
-					var element = document.querySelector(
-						`[data-x="${i}"][data-y="${j}"]`
-					);
-					if (element && element.getAttribute("data-bomb") == 1) {
-						++bomb;
-						console.log(bomb);
-					}
-				}
-			}
-			return bomb;
-		}
-
-		$(".playfield").on("contextmenu", ".field", (event) => {
+		$(document).on("contextmenu", (event) => {
 			event.preventDefault();
-			if (event.currentTarget.textContent == "") {
-				event.currentTarget.textContent = "🏳️";
-				event.currentTarget.style.fontSize = "1.5em";
-				event.currentTarget.classList.add("flagged");
-				--remainingBombs;
-				if (
-					event.currentTarget.classList.contains("flagged") &&
-					event.currentTarget.getAttribute("data-bomb") == 1
-				) {
-					++found;
-					console.log("You found: " + found);
-				}
-			} else if ((event.currentTarget.textContent = "🏳️")) {
-				event.currentTarget.textContent = "";
-				event.currentTarget.classList.remove("flagged");
-				++remainingBombs;
-			}
-			updateRemaining();
-			if (found == placedBomb) {
-				won = true;
-				gameOver();
-			}
+			return false;
 		});
 
 		function updateRemaining() {
@@ -153,4 +142,55 @@ function startOver() {
 	field.classList.add("playfield-small");
 	field.classList.remove("playfield-medium");
 	field.classList.remove("playfield-large");
+}
+function checkRound(field) {
+	let table = $(".playfield");
+
+	// 1. mező ellenőrzése
+	let x = field.attr("data-x") - 1;
+	let y = field.attr("data-y") - 1;
+	let checkField = table.find("[data-x=" + x + "][data-y=" + y + "]");
+
+	if (!checkField.hasClass("fieldOpened") && !checkField.attr("data-bomb")) {
+		console.log(checkField.get(0));
+		checkField.addClass("fieldOpened");
+		// checkRound(checkField);
+	} else if (checkField.attr("data-bomb")) {
+		++neighborBombs;
+	}
+	// 2. mező ellenőrzése
+	x = field.attr("data-x");
+	y = field.attr("data-y") - 1;
+	checkField = table.find("[data-x=" + x + "][data-y=" + y + "]");
+
+	if (!checkField.hasClass("fieldOpened") && !checkField.attr("data-bomb")) {
+		console.log(checkField.get(0));
+		checkField.addClass("fieldOpened");
+	} else if (checkField.attr("data-bomb")) {
+		++neighborBombs;
+	}
+
+	// 3. mező
+	x = field.attr("data-x") + 1;
+	y = field.attr("data-y") - 1;
+	checkField = table.find("[data-x=" + x + "][data-y=" + y + "]");
+
+	if (!checkField.hasClass("fieldOpened") && !checkField.attr("data-bomb")) {
+		console.log(checkField.get(0));
+		checkField.addClass("fieldOpened");
+	} else if (checkField.attr("data-bomb")) {
+		++neighborBombs;
+	}
+
+	// 4. mező
+
+	// 5. mező
+
+	// 6. mező
+
+	// 7. mező
+
+	// 8.mező
+
+	return neighborBombs;
 }
