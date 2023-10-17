@@ -123,3 +123,7 @@ body {
 .fieldOpened {
     background-color: white;
 }
+
+.checked {
+    background-color: rgba(0, 0, 0, 0.342);
+}
