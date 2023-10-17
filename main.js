@@ -135,6 +135,9 @@ $(document).ready(function () {
 		if (won === false) {
 			document.getElementById("gameStatus").innerText = "You lost!";
 			document.getElementById("gameStatus").style.color = "red";
+			document.getElementById("foundMines").innerText =
+				"You found: " + found + " mine(s)";
+
 			revealAll();
 		} else {
 			document.getElementById("gameStatus").innerText = "You won!";
