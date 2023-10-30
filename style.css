@@ -19,6 +19,11 @@ body {
     text-align: center;
 }
 
+.warningText{
+    color: red;
+    margin: 5px;
+}
+
 .difficulty {
     display: flex;
     justify-content: center;
