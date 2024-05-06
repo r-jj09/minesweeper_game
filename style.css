@@ -1,8 +1,11 @@
 @import url('https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica&family=Roboto+Mono:wght@500&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&display=swap');
+
 
 
 body {
     margin: 25px !important;
+    text-align: center !important;
 }
 
 * {
@@ -19,7 +22,9 @@ body {
     text-align: center;
 }
 
-.warningText{
+.warningText {
+    font-family: "Montserrat", sans-serif;
+    font-weight: 600;
     text-align: center;
     color: red;
     margin: 5px;
